@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Form, Input, Select, DatePicker, Button, Typography, message, Space, Modal } from 'antd';
+import { Card, Form, Input, InputNumber, Select, DatePicker, Button, Typography, message, Space, Modal, Divider } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import api from '../../api/axiosInstance';
 
@@ -121,6 +121,61 @@ function EmployeeForm() {
               rules={[{ required: true, message: 'Date of joining is required' }]}
             >
               <DatePicker style={{ width: '100%' }} />
+            </Form.Item>
+
+            <Divider>Salary Structure</Divider>
+
+            <Form.Item
+              name="basicSalary"
+              label="Basic Salary"
+              rules={[{ required: true, message: 'Basic salary is required' }]}
+            >
+              <InputNumber style={{ width: '100%' }} min={0.01} placeholder="e.g. 50000" />
+            </Form.Item>
+
+            <Form.Item
+              name="hra"
+              label="HRA"
+              rules={[{ required: true, message: 'HRA is required' }]}
+              initialValue={0}
+            >
+              <InputNumber style={{ width: '100%' }} min={0} placeholder="e.g. 20000" />
+            </Form.Item>
+
+            <Form.Item
+              name="allowances"
+              label="Allowances"
+              rules={[{ required: true, message: 'Allowances is required' }]}
+              initialValue={0}
+            >
+              <InputNumber style={{ width: '100%' }} min={0} placeholder="e.g. 10000" />
+            </Form.Item>
+
+            <Form.Item
+              name="pfDeduction"
+              label="PF Deduction"
+              rules={[{ required: true, message: 'PF deduction is required' }]}
+              initialValue={0}
+            >
+              <InputNumber style={{ width: '100%' }} min={0} placeholder="e.g. 6000" />
+            </Form.Item>
+
+            <Form.Item
+              name="taxDeduction"
+              label="Tax Deduction"
+              rules={[{ required: true, message: 'Tax deduction is required' }]}
+              initialValue={0}
+            >
+              <InputNumber style={{ width: '100%' }} min={0} placeholder="e.g. 5000" />
+            </Form.Item>
+
+            <Form.Item
+              name="insuranceDeduction"
+              label="Insurance Deduction"
+              rules={[{ required: true, message: 'Insurance deduction is required' }]}
+              initialValue={0}
+            >
+              <InputNumber style={{ width: '100%' }} min={0} placeholder="e.g. 2000" />
             </Form.Item>
           </Space>
 

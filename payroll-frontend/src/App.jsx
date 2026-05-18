@@ -6,11 +6,14 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import MyPayslips from './pages/employee/MyPayslips';
 import MyProfile from './pages/employee/MyProfile';
+import MySalary from './pages/employee/MySalary';
+import MyAttendance from './pages/employee/MyAttendance';
 import EmployeeList from './pages/employer/EmployeeList';
 import EmployeeForm from './pages/employer/EmployeeForm';
 import SalaryManagement from './pages/employer/SalaryManagement';
 import DepartmentList from './pages/employer/DepartmentList';
 import PayslipOverview from './pages/employer/PayslipOverview';
+import AttendanceManagement from './pages/employer/AttendanceManagement';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -36,6 +39,16 @@ function App() {
         <Route path="/my-payslips" element={
           <ProtectedRoute roles={['ROLE_EMPLOYEE']}>
             <MyPayslips />
+          </ProtectedRoute>
+        } />
+        <Route path="/my-salary" element={
+          <ProtectedRoute roles={['ROLE_EMPLOYEE']}>
+            <MySalary />
+          </ProtectedRoute>
+        } />
+        <Route path="/my-attendance" element={
+          <ProtectedRoute roles={['ROLE_EMPLOYEE']}>
+            <MyAttendance />
           </ProtectedRoute>
         } />
         <Route path="/my-profile" element={<MyProfile />} />
@@ -64,6 +77,11 @@ function App() {
         <Route path="/payslips" element={
           <ProtectedRoute roles={['ROLE_EMPLOYER']}>
             <PayslipOverview />
+          </ProtectedRoute>
+        } />
+        <Route path="/attendance" element={
+          <ProtectedRoute roles={['ROLE_EMPLOYER']}>
+            <AttendanceManagement />
           </ProtectedRoute>
         } />
 

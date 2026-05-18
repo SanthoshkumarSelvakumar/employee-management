@@ -52,6 +52,8 @@ public class SecurityConfig {
                     .requestMatchers("/employees/**").hasAuthority("ROLE_EMPLOYER")
                     .requestMatchers("/payslips/**").authenticated()
                     .requestMatchers("/profile/**").authenticated()
+                    .requestMatchers("/attendance/my").authenticated()
+                    .requestMatchers("/attendance/**").hasAuthority("ROLE_EMPLOYER")
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

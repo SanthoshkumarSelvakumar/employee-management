@@ -4,11 +4,13 @@ import com.payroll.dto.request.EmployeeRequest;
 import com.payroll.dto.response.EmployeeResponse;
 import com.payroll.entity.Department;
 import com.payroll.entity.Employee;
+import com.payroll.entity.SalaryStructure;
 import com.payroll.entity.User;
 import com.payroll.exception.BusinessException;
 import com.payroll.exception.ResourceNotFoundException;
 import com.payroll.repository.DepartmentRepository;
 import com.payroll.repository.EmployeeRepository;
+import com.payroll.repository.SalaryStructureRepository;
 import com.payroll.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.security.SecureRandom;
 import java.util.UUID;
 
@@ -25,6 +28,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
+    private final SalaryStructureRepository salaryStructureRepository;
     private final PasswordEncoder passwordEncoder;
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
@@ -32,10 +36,12 @@ public class EmployeeService {
     public EmployeeService(EmployeeRepository employeeRepository,
                            UserRepository userRepository,
                            DepartmentRepository departmentRepository,
+                           SalaryStructureRepository salaryStructureRepository,
                            PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
+        this.salaryStructureRepository = salaryStructureRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -94,6 +100,20 @@ public class EmployeeService {
                 .status(Employee.Status.ACTIVE)
                 .build();
         employee = employeeRepository.save(employee);
+
+        // Create initial salary structure effective from current month
+        SalaryStructure salary = SalaryStructure.builder()
+                .employee(employee)
+                .basicSalary(request.getBasicSalary())
+                .hra(request.getHra())
+                .allowances(request.getAllowances())
+                .pfDeduction(request.getPfDeduction())
+                .taxDeduction(request.getTaxDeduction())
+                .insuranceDeduction(request.getInsuranceDeduction())
+                .effectiveFrom(LocalDate.now().withDayOfMonth(1))
+                .createdBy(user)
+                .build();
+        salaryStructureRepository.save(salary);
 
         EmployeeResponse response = toResponse(employee);
         response.setTemporaryPassword(generatedPassword);

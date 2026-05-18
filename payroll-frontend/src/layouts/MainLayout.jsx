@@ -11,6 +11,7 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  ClockCircleOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../hooks/useAuth';
 
@@ -27,7 +28,9 @@ function MainLayout() {
 
   const employeeMenuItems = [
     { key: '/', icon: <DashboardOutlined />, label: 'Dashboard' },
+    { key: '/my-salary', icon: <DollarOutlined />, label: 'My Salary' },
     { key: '/my-payslips', icon: <FileTextOutlined />, label: 'My Payslips' },
+    { key: '/my-attendance', icon: <ClockCircleOutlined />, label: 'My Attendance' },
     { key: '/my-profile', icon: <UserOutlined />, label: 'My Profile' },
   ];
 
@@ -35,6 +38,7 @@ function MainLayout() {
     { key: '/', icon: <DashboardOutlined />, label: 'Dashboard' },
     { key: '/employees', icon: <TeamOutlined />, label: 'Employees' },
     { key: '/departments', icon: <BankOutlined />, label: 'Departments' },
+    { key: '/attendance', icon: <ClockCircleOutlined />, label: 'Attendance' },
     { key: '/payslips', icon: <FileTextOutlined />, label: 'Payslips' },
   ];
 
