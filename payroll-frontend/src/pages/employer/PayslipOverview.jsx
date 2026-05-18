@@ -57,8 +57,15 @@ function PayslipOverview() {
     const month = now.getMonth() + 1;
     const year = now.getFullYear();
     try {
-      await api.post(`/payslips/generate?month=${month}&year=${year}`);
-      message.success(`Payslips generated for ${month}/${year}`);
+      const response = await api.post(`/payslips/generate?month=${month}&year=${year}`);
+      const { generated, skipped, total } = response.data;
+      if (generated > 0) {
+        message.success(`Generated ${generated} payslip(s) for ${month}/${year}`);
+      } else if (total === 0) {
+        message.warning('No active employees found.');
+      } else {
+        message.warning(`No payslips generated. ${skipped} employee(s) skipped — ensure salary structures are assigned.`);
+      }
       loadPayslips();
     } catch (error) {
       message.error('Failed to generate payslips');

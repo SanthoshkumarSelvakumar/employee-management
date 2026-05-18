@@ -66,7 +66,7 @@ public class PayslipService {
     }
 
     @Transactional
-    public void generateMonthlyPayslips(int month, int year) {
+    public java.util.Map<String, Integer> generateMonthlyPayslips(int month, int year) {
         LocalDate payPeriod = LocalDate.of(year, month, 1);
         List<Employee> activeEmployees = employeeRepository
                 .findByStatus(Employee.Status.ACTIVE, Pageable.unpaged())
@@ -124,6 +124,7 @@ public class PayslipService {
 
         LOGGER.info("Payslip generation complete for " + month + "/" + year //ignorei18n_start //ignorei18n_end
                 + ": generated=" + generated + ", skipped=" + skipped); //ignorei18n_start //ignorei18n_end
+        return java.util.Map.of("generated", generated, "skipped", skipped, "total", activeEmployees.size());
     }
 
     private PayslipResponse toResponse(Payslip payslip) {

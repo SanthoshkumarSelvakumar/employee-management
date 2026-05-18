@@ -87,11 +87,11 @@ public class PayslipController {
     }
 
     @PostMapping("/generate")
-    public ResponseEntity<Void> triggerPayslipGeneration(
+    public ResponseEntity<java.util.Map<String, Integer>> triggerPayslipGeneration(
             @RequestParam int month,
             @RequestParam int year) {
-        payslipService.generateMonthlyPayslips(month, year);
-        return ResponseEntity.ok().build();
+        java.util.Map<String, Integer> result = payslipService.generateMonthlyPayslips(month, year);
+        return ResponseEntity.ok(result);
     }
 
     private void verifyPayslipAccess(PayslipResponse payslip, Authentication authentication) {
