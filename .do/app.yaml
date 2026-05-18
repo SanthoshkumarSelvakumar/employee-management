@@ -11,22 +11,12 @@ services:
     http_port: 8080
     instance_count: 1
     instance_size_slug: basic-xxs
+    routes:
+      - path: /api
     envs:
-      - key: DB_HOST
+      - key: DATABASE_URL
         scope: RUN_TIME
-        value: ${db.HOSTNAME}
-      - key: DB_PORT
-        scope: RUN_TIME
-        value: ${db.PORT}
-      - key: DB_NAME
-        scope: RUN_TIME
-        value: ${db.DATABASE}
-      - key: DB_USERNAME
-        scope: RUN_TIME
-        value: ${db.USERNAME}
-      - key: DB_PASSWORD
-        scope: RUN_TIME
-        value: ${db.PASSWORD}
+        value: ${dev-db-676603.DATABASE_URL}
       - key: JWT_SECRET
         scope: RUN_TIME
         type: SECRET
@@ -35,20 +25,18 @@ services:
         scope: RUN_TIME
         value: ${APP_URL}
 
+static_sites:
   - name: payroll-frontend
     github:
       repo: SanthoshkumarSelvakumar/employee-management
       branch: main
       deploy_on_push: true
     source_dir: /payroll-frontend
-    dockerfile_path: Dockerfile
-    http_port: 80
-    instance_count: 1
-    instance_size_slug: basic-xxs
-
-databases:
-  - name: db
-    engine: PG
-    version: "15"
-    size: db-s-dev-database
-    num_nodes: 1
+    build_command: npm install && npm run build
+    output_dir: dist
+    routes:
+      - path: /
+    envs:
+      - key: VITE_API_URL
+        scope: BUILD_TIME
+        value: ${APP_URL}/api
