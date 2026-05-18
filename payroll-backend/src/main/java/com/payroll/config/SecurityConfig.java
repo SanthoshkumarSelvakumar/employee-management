@@ -44,7 +44,9 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/actuator/health").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/departments/**").authenticated()
                     .requestMatchers("/api/departments/**").hasAuthority("ROLE_EMPLOYER")
                     .requestMatchers("/api/employees/**").hasAuthority("ROLE_EMPLOYER")
@@ -60,14 +62,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(","))); //ignorei18n_start //ignorei18n_end
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); //ignorei18n_start //ignorei18n_end
-        configuration.setAllowedHeaders(List.of("*")); //ignorei18n_start //ignorei18n_end
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration); //ignorei18n_start //ignorei18n_end
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
