@@ -96,6 +96,7 @@ public class EmployeeService {
         employee = employeeRepository.save(employee);
 
         EmployeeResponse response = toResponse(employee);
+        response.setTemporaryPassword(generatedPassword);
         return response;
     }
 

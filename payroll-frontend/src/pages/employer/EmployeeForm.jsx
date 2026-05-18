@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Form, Input, Select, DatePicker, Button, Typography, message, Space } from 'antd';
+import { Card, Form, Input, Select, DatePicker, Button, Typography, message, Space, Modal } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import api from '../../api/axiosInstance';
 
@@ -33,9 +33,20 @@ function EmployeeForm() {
         ...values,
         dateOfJoining: values.dateOfJoining.format('YYYY-MM-DD'),
       };
-      await api.post('/employees', payload);
-      message.success('Employee created successfully. A temporary password has been generated.');
-      navigate('/employees');
+      const response = await api.post('/employees', payload);
+      const tempPassword = response.data.temporaryPassword;
+      Modal.success({
+        title: 'Employee Created Successfully',
+        content: (
+          <div>
+            <p>Share these credentials with the employee:</p>
+            <p><strong>Email:</strong> {values.email}</p>
+            <p><strong>Temporary Password:</strong> <code>{tempPassword}</code></p>
+            <p style={{ marginTop: 12, color: '#666' }}>The employee should change their password after first login.</p>
+          </div>
+        ),
+        onOk: () => navigate('/employees'),
+      });
     } catch (error) {
       const msg = error.response?.data?.message || 'Failed to create employee';
       message.error(msg);

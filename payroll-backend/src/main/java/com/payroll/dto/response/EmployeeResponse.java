@@ -25,4 +25,5 @@ public class EmployeeResponse {
     private LocalDate dateOfJoining;
     private String status;
     private LocalDateTime createdAt;
+    private String temporaryPassword;
 }
