@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Form, Input, Button, Typography, message, Space } from 'antd';
-import { MailOutlined, LockOutlined, DollarOutlined } from '@ant-design/icons';
+import { message } from 'antd';
 import { useAuth } from '../hooks/useAuth';
-
-const { Title, Text } = Typography;
 
 function Login() {
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const onFinish = async (values) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) return;
     setLoading(true);
     try {
-      await login(values.email, values.password);
+      await login(email, password);
       message.success('Login successful');
       navigate('/');
     } catch (error) {
@@ -26,61 +27,34 @@ function Login() {
   };
 
   return (
-    <Card
-      style={{
-        borderRadius: 12,
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)',
-      }}
-      bodyStyle={{ padding: '40px 32px' }}
-    >
-      <Space direction="vertical" size="middle" style={{ width: '100%', textAlign: 'center', marginBottom: 32 }}>
-        <DollarOutlined style={{ fontSize: 48, color: '#1677ff' }} />
-        <Title level={3} style={{ margin: 0 }}>Payroll System</Title>
-        <Text type="secondary">Sign in to your account</Text>
-      </Space>
-
-      <Form
-        name="login"
-        onFinish={onFinish}
-        layout="vertical"
-        size="large"
-      >
-        <Form.Item
-          name="email"
-          rules={[
-            { required: true, message: 'Please enter your email' },
-            { type: 'email', message: 'Please enter a valid email' },
-          ]}
-        >
-          <Input
-            prefix={<MailOutlined style={{ color: '#bfbfbf' }} />}
-            placeholder="Email address"
+    <div className="login-card">
+      <h2>Secure Login</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Corporate Email</label>
+          <input
+            type="email"
+            placeholder="name@company.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: 'Please enter your password' }]}
-        >
-          <Input.Password
-            prefix={<LockOutlined style={{ color: '#bfbfbf' }} />}
-            placeholder="Password"
+        </div>
+        <div className="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
-        </Form.Item>
-
-        <Form.Item style={{ marginBottom: 0 }}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            loading={loading}
-            block
-            style={{ height: 44, borderRadius: 8 }}
-          >
-            Sign In
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
+        </div>
+        <button type="submit" className="btn-primary" disabled={loading}>
+          {loading ? 'Signing In...' : 'Sign In'}
+        </button>
+      </form>
+    </div>
   );
 }
 

@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/payslips")
+@RequestMapping("/payslips")
 public class PayslipController {
 
     private final PayslipService payslipService;

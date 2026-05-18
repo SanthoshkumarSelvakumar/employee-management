@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employees/{employeeId}/salary")
+@RequestMapping("/employees/{employeeId}/salary")
 public class SalaryController {
 
     private final SalaryService salaryService;

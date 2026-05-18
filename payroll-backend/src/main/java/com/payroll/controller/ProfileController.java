@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/profile")
+@RequestMapping("/profile")
 public class ProfileController {
 
     private final EmployeeService employeeService;
